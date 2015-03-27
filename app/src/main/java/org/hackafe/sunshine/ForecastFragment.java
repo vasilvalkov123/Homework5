@@ -103,10 +103,13 @@ public class ForecastFragment extends Fragment {
                 String dateStr = SimpleDateFormat.getDateInstance().format(new Date(dt*1000));
 
                 Forecast forecast = new Forecast();
-                forecast.desc = String.format("%s - %s   %.1f°C", dateStr, description, dayTemp);
+
+              double  far = dayTemp*1.8+32;
+
+                forecast.desc = String.format("%s - %s   %.1f°C", dateStr, description,  far);
                 forecast.timestamp = dt;
                 forecastList.add(forecast);
-                Log.d("Sunshine", "forecast = "+forecast);
+
             }
             return forecastList;
         } catch (Throwable t) {

@@ -1,6 +1,8 @@
 package org.hackafe.sunshine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -32,7 +34,6 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-
     public ForecastFragment() {
     }
 
@@ -45,7 +46,11 @@ public class ForecastFragment extends Fragment {
                 .Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        String data = getForecast();
+
+        SharedPreferences sharedpreferences = this.getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+
+        String data;
+        data = getForecast(sharedpreferences.getString("text", "Sofia"));
         List<Forecast> forecast = parseForecast(data);
 
 
@@ -118,9 +123,12 @@ public class ForecastFragment extends Fragment {
         }
     }
 
-    private String getForecast() {
+    private String getForecast(String poo) {
         try {
-            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Plovdiv&mode=json&units=metric&cnt=7");
+
+
+            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q="+poo+"&mode=json&units=metric&cnt=7");
+
             InputStream inputStream = url.openStream();
             try {
                 BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
